@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rishikesh Pandey — Full-Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E14;
+    --surface:#111722;
+    --surface-2:#161D2B;
+    --border:#232C3D;
+    --text:#E7ECF2;
+    --muted:#8B98A8;
+    --amber:#F2A93B;
+    --teal:#5FD3A4;
+    --mono:'JetBrains Mono', monospace;
+    --display:'Space Grotesk', sans-serif;
+    --body:'Inter', sans-serif;
+  }
+  :root{box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 24px;}
+  section{padding:96px 0;}
+  @media (max-width:700px){ section{padding:64px 0;} }
+
+  /* subtle grid backdrop */
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1; opacity:0.35;
+    background-image:
+      linear-gradient(to right, #ffffff08 1px, transparent 1px),
+      linear-gradient(to bottom, #ffffff08 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+  }
+
+  /* nav */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,20,0.75);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:16px; padding-bottom:16px;}
+  .logo{font-family:var(--mono); font-weight:500; color:var(--text); font-size:15px;}
+  .logo span{color:var(--amber);}
+  .navlinks{display:flex; gap:28px; font-size:14px; color:var(--muted);}
+  .navlinks a:hover{color:var(--text);}
+  .nav-cta{
+    border:1px solid var(--border); padding:8px 16px; border-radius:6px;
+    font-family:var(--mono); font-size:13px; color:var(--text);
+    transition:border-color .2s, background .2s;
+  }
+  .nav-cta:hover{border-color:var(--amber); background:var(--surface-2);}
+  @media (max-width:700px){ .navlinks{display:none;} }
+
+  /* hero */
+  .hero{padding-top:80px; padding-bottom:80px;}
+  .hero-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:center;
+  }
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+
+  .eyebrow{
+    font-family:var(--mono); font-size:13px; color:var(--teal);
+    display:flex; align-items:center; gap:8px; margin-bottom:20px;
+  }
+  .eyebrow::before{content:''; width:8px; height:8px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal);}
+
+  h1{
+    font-family:var(--display); font-weight:700; font-size:clamp(36px,5vw,56px);
+    line-height:1.08; letter-spacing:-0.02em; margin-bottom:20px;
+  }
+  h1 .accent{color:var(--amber);}
+
+  .hero p.lede{color:var(--muted); font-size:17px; max-width:520px; margin-bottom:32px;}
+
+  .btn-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px;}
+  .btn{
+    font-family:var(--mono); font-size:14px; padding:12px 22px; border-radius:6px;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .15s, box-shadow .15s;
+  }
+  .btn-primary{background:var(--amber); color:#14100a; font-weight:500;}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 8px 24px -8px #f2a93b66;}
+  .btn-ghost{border:1px solid var(--border); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--muted); transform:translateY(-2px);}
+
+  .contact-row{display:flex; gap:20px; flex-wrap:wrap; font-size:13px; color:var(--muted); font-family:var(--mono);}
+  .contact-row a:hover{color:var(--amber);}
+
+  /* terminal card */
+  .terminal{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden; box-shadow:0 24px 60px -24px #00000090;
+  }
+  .terminal-head{
+    display:flex; align-items:center; gap:8px; padding:12px 16px;
+    border-bottom:1px solid var(--border); background:var(--surface-2);
+  }
+  .dot{width:10px; height:10px; border-radius:50%;}
+  .dot.r{background:#ff5f57;} .dot.y{background:#febc2e;} .dot.g{background:#28c840;}
+  .terminal-title{margin-left:8px; font-family:var(--mono); font-size:12px; color:var(--muted);}
+  .terminal-body{padding:22px 20px; font-family:var(--mono); font-size:13.5px; min-height:260px;}
+  .terminal-body .line{margin-bottom:10px; color:var(--muted);}
+  .terminal-body .prompt{color:var(--teal);}
+  .terminal-body .out{color:var(--text);}
+  .terminal-body .amber{color:var(--amber);}
+  .cursor{display:inline-block; width:7px; height:15px; background:var(--amber); vertical-align:middle; animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* stats */
+  .stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden;
+  }
+  @media (max-width:700px){ .stats{grid-template-columns:repeat(2,1fr);} }
+  .stat{background:var(--surface); padding:28px 20px; text-align:center;}
+  .stat .num{font-family:var(--display); font-size:32px; font-weight:700; color:var(--amber);}
+  .stat .label{font-size:12.5px; color:var(--muted); margin-top:6px; font-family:var(--mono);}
+
+  /* section headers */
+  .sec-head{margin-bottom:44px;}
+  .sec-tag{font-family:var(--mono); font-size:12.5px; color:var(--teal); margin-bottom:10px;}
+  .sec-title{font-family:var(--display); font-size:clamp(26px,3.4vw,36px); font-weight:600; letter-spacing:-0.01em;}
+  .sec-sub{color:var(--muted); margin-top:10px; max-width:600px; font-size:15px;}
+
+  /* about */
+  .about-body{color:var(--muted); font-size:16px; max-width:760px;}
+  .about-body strong{color:var(--text); font-weight:500;}
+
+  /* skills */
+  .skill-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:860px){ .skill-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .skill-grid{grid-template-columns:1fr;} }
+  .skill-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:22px;
+    transition:border-color .2s, transform .2s;
+  }
+  .skill-card:hover{border-color:var(--amber); transform:translateY(-3px);}
+  .skill-card h4{font-family:var(--display); font-size:15px; margin-bottom:14px; color:var(--amber);}
+  .tag-list{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-family:var(--mono); font-size:12px; color:var(--text); background:var(--surface-2);
+    border:1px solid var(--border); padding:5px 10px; border-radius:5px;
+  }
+
+  /* timeline (internship + education) */
+  .timeline{border-left:1px solid var(--border); margin-left:6px; padding-left:32px; position:relative;}
+  .t-item{position:relative; margin-bottom:36px;}
+  .t-item:last-child{margin-bottom:0;}
+  .t-item::before{
+    content:''; position:absolute; left:-38px; top:4px; width:11px; height:11px;
+    border-radius:50%; background:var(--bg); border:2px solid var(--amber);
+  }
+  .t-role{font-family:var(--display); font-size:18px; font-weight:600;}
+  .t-org{color:var(--teal); font-family:var(--mono); font-size:13px; margin-top:2px;}
+  .t-date{color:var(--muted); font-family:var(--mono); font-size:12.5px; margin-top:2px;}
+  .t-desc{color:var(--muted); margin-top:10px; font-size:14.5px; max-width:600px;}
+
+  /* projects */
+  .proj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media (max-width:860px){ .proj-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .proj-grid{grid-template-columns:1fr;} }
+  .proj-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:22px;
+    display:flex; flex-direction:column; gap:12px; transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{border-color:var(--teal); transform:translateY(-3px);}
+  .proj-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .proj-title{font-family:var(--display); font-size:16px; font-weight:600;}
+  .proj-badge{font-family:var(--mono); font-size:10.5px; color:var(--bg); background:var(--teal); padding:3px 8px; border-radius:4px; white-space:nowrap;}
+  .proj-badge.wip{background:var(--amber);}
+  .proj-desc{color:var(--muted); font-size:13.5px; flex:1;}
+  .proj-meta{display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11.5px; color:var(--muted); border-top:1px solid var(--border); padding-top:12px;}
+  .proj-stack{color:var(--amber);}
+  .proj-links{display:flex; gap:10px; flex-wrap:wrap;}
+  .proj-link,.cert-link{font-family:var(--mono); font-size:12px; color:var(--teal); border:1px solid var(--border); padding:5px 10px; border-radius:5px; display:inline-block; transition:border-color .2s, background .2s;}
+  .proj-link:hover,.cert-link:hover{border-color:var(--teal); background:var(--surface-2);}
+  .cert-link{margin-top:8px;}
+
+  /* certs */
+  .cert-list{display:flex; flex-direction:column; border:1px solid var(--border); border-radius:10px; overflow:hidden;}
+  .cert-row{
+    display:flex; justify-content:space-between; align-items:center; padding:18px 22px;
+    background:var(--surface); border-bottom:1px solid var(--border);
+  }
+  .cert-row:last-child{border-bottom:none;}
+  .cert-name{font-weight:500;}
+  .cert-org{color:var(--teal); font-family:var(--mono); font-size:12.5px; margin-top:3px;}
+  .cert-date{font-family:var(--mono); font-size:12.5px; color:var(--muted);}
+
+  /* soft skills / interests */
+  .pill-row{display:flex; flex-wrap:wrap; gap:10px;}
+  .pill{
+    padding:9px 16px; border-radius:999px; border:1px solid var(--border);
+    font-size:13.5px; color:var(--text); background:var(--surface);
+  }
+
+  /* footer / contact */
+  footer{border-top:1px solid var(--border); padding:64px 0 32px;}
+  .footer-grid{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:32px;}
+  .footer-title{font-family:var(--display); font-size:clamp(28px,4vw,42px); font-weight:700; max-width:560px; line-height:1.1;}
+  .footer-links{display:flex; flex-direction:column; gap:10px; font-family:var(--mono); font-size:13.5px;}
+  .footer-links a{color:var(--muted);}
+  .footer-links a:hover{color:var(--amber);}
+  .footer-bottom{margin-top:56px; padding-top:24px; border-top:1px solid var(--border); display:flex; justify-content:space-between; color:var(--muted); font-size:12.5px; font-family:var(--mono); flex-wrap:wrap; gap:10px;}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">rishikesh<span>.dev</span></div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="nav-cta" href="mailto:rishipandey123j@gmail.com">Say hello →</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Available for opportunities</div>
+        <h1>Rishikesh Pandey builds<br>full-stack products <span class="accent">end to end.</span></h1>
+        <p class="lede">MCA graduate at Brainware University with hands-on experience across React, Spring Boot, Node.js and FastAPI — shipped inside a 5-month full-stack internship at IBM, and self-taught in AI/ML along the way.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#projects">View my projects</a>
+          <a class="btn btn-ghost" href="https://github.com/pandeyRishi007" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="contact-row">
+          <span>📍 Kolkata, India</span>
+          <a href="mailto:rishipandey123j@gmail.com">rishipandey123j@gmail.com</a>
+          <a href="tel:+919007536639">+91-9007536639</a>
+          <a href="https://linkedin.com/in/rishikesh-pandey" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-head">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <div class="terminal-title">rishikesh@portfolio: ~</div>
+        </div>
+        <div class="terminal-body" id="termBody">
+          <div class="line"><span class="prompt">$</span> whoami</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><div class="num">9</div><div class="label">PROJECTS SHIPPED</div></div>
+      <div class="stat"><div class="num">5</div><div class="label">MONTHS AT IBM</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">CERTIFICATIONS</div></div>
+      <div class="stat"><div class="num">8.2</div><div class="label">MCA CGPA</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">01 · ABOUT</div>
+      <div class="sec-title">From coursework to production code.</div>
+    </div>
+    <p class="about-body">
+      I'm an <strong>MCA graduate</strong> with a strong foundation in Java and modern full-stack development. I build scalable web applications with <strong>React, Spring Boot and Node.js</strong>, and I'm equally drawn to <strong>AI and machine learning</strong> — from text classification models to data-driven applications. During a five-month internship at <strong>IBM</strong>, I worked hands-on with enterprise-level web development practices, and I've kept shipping personal projects ever since — a portfolio app, a CRUD system, an NLP model, a FastAPI backend, and more. I'm looking to bring that same curiosity to an engineering team where I can keep growing in software development and data science.
+    </p>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">02 · SKILLS</div>
+      <div class="sec-title">The stack I reach for.</div>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <h4>Languages</h4>
+        <div class="tag-list">
+          <span class="tag">Java</span><span class="tag">J2EE</span><span class="tag">SQL</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">React.js</span><span class="tag">Next.js</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h4>Frameworks</h4>
+        <div class="tag-list">
+          <span class="tag">Spring Boot</span><span class="tag">React.js</span>
+          <span class="tag">Node.js</span><span class="tag">FastAPI</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h4>Databases</h4>
+        <div class="tag-list">
+          <span class="tag">MySQL</span><span class="tag">MongoDB</span><span class="tag">Mongoose</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h4>Tools & CI/CD</h4>
+        <div class="tag-list">
+          <span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Jenkins CI/CD</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h4>Concepts</h4>
+        <div class="tag-list">
+          <span class="tag">OOP</span><span class="tag">Collections</span><span class="tag">Exception Handling</span>
+          <span class="tag">Multithreading</span><span class="tag">REST APIs</span><span class="tag">System Design</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h4>ML / AI</h4>
+        <div class="tag-list">
+          <span class="tag">TensorFlow</span><span class="tag">NLP</span>
+          <span class="tag">Text Classification</span><span class="tag">Neural Networks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">03 · EXPERIENCE</div>
+      <div class="sec-title">Where I've worked.</div>
+    </div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-role">Full Stack Development Intern</div>
+        <div class="t-org">IBM · Full-time, 5 months</div>
+        <div class="t-date">Jul 20, 2025 — Dec 15, 2025</div>
+        <div class="t-desc">Completed a comprehensive full-time internship gaining hands-on experience with enterprise-level web development technologies and best practices.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">04 · PROJECTS</div>
+      <div class="sec-title">Things I've built.</div>
+      <p class="sec-sub">A mix of full-stack apps, an ML model, and backend APIs — from coursework to solo weekend builds.</p>
+    </div>
+    <div class="proj-grid" id="projGrid"></div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">05 · EDUCATION</div>
+      <div class="sec-title">Academic background.</div>
+    </div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-role">Master of Computer Applications (MCA)</div>
+        <div class="t-org">Brainware University</div>
+        <div class="t-date">2024 — 2026 · CGPA 8.2</div>
+      </div>
+      <div class="t-item">
+        <div class="t-role">B.Sc. Computer Science (Hons.)</div>
+        <div class="t-org">Bangabasi Morning College, Calcutta University</div>
+        <div class="t-date">2019 — 2022 · 78%</div>
+      </div>
+      <div class="t-item">
+        <div class="t-role">Intermediate (10+2)</div>
+        <div class="t-org">St. Judes High School</div>
+        <div class="t-date">2019 · 73.25%</div>
+      </div>
+      <div class="t-item">
+        <div class="t-role">Matriculation (10th)</div>
+        <div class="t-org">St. Judes High School</div>
+        <div class="t-date">2017 · 78%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">06 · CERTIFICATIONS</div>
+      <div class="sec-title">Courses & credentials.</div>
+    </div>
+    <div class="cert-list">
+      <div class="cert-row">
+        <div>
+          <div class="cert-name">Full Stack Development</div>
+          <div class="cert-org">IBM</div>
+          <a class="cert-link" href="https://ibmlearning.skillsnetwork.site/certificates/5afae3ab-f3ab-4fa3-8957-071aa18c523d" target="_blank" rel="noopener">View certificate ↗</a>
+        </div>
+        <div class="cert-date">December 2025</div>
+      </div>
+      <div class="cert-row">
+        <div>
+          <div class="cert-name">Generative AI Course</div>
+          <div class="cert-org">NPTEL SWAYAM</div>
+        </div>
+        <div class="cert-date">December 2025</div>
+      </div>
+      <div class="cert-row">
+        <div>
+          <div class="cert-name">Spring Boot</div>
+          <div class="cert-org">Telusko</div>
+        </div>
+        <div class="cert-date">May 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">07 · BEYOND CODE</div>
+      <div class="sec-title">Soft skills & interests.</div>
+    </div>
+    <p class="sec-sub" style="margin-bottom:20px;">Leadership · Communication · Problem-Solving · Adaptability · Teamwork · Cross-functional Collaboration</p>
+    <div class="pill-row">
+      <span class="pill">🏏 Cricket</span>
+      <span class="pill">🤾 Kabaddi</span>
+      <span class="pill">🎨 Drawing & Painting</span>
+      <span class="pill">🎮 Gaming</span>
+      <span class="pill">📚 Reading</span>
+      <span class="pill">🤖 AI / ML</span>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-title">Let's build something together.</div>
+      <div class="footer-links">
+        <a href="mailto:rishipandey123j@gmail.com">rishipandey123j@gmail.com</a>
+        <a href="tel:+919007536639">+91-9007536639</a>
+        <a href="https://linkedin.com/in/rishikesh-pandey" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/pandeyRishi007" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Rishikesh Pandey</span>
+      <span>Kolkata, India</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Terminal typing effect
+  const projects = [
+    {name:"Creative Showcase & Art Vault", date:"Jan 2026", tag:"Live Demo", tagType:"live", gh:"https://github.com/pandeyRishi007/Creaters-Showcase-cum-Art-Vault", stack:"React · Node.js", desc:"Full-stack portfolio/art-showcase web app with a React frontend and Node.js backend, deployed live on Netlify with a responsive, dynamic UI.", org:"Brainware University"},
+    {name:"User Management System", date:"Apr 2026", tag:"GitHub", tagType:"live", gh:"https://github.com/pandeyRishi007/User-Management-System", stack:"React · Spring Boot · MySQL", desc:"Full CRUD system with a React + Axios frontend and a secure, scalable Spring Boot backend connected to MySQL.", org:"Solo Project"},
+    {name:"ML — Spotify Lyric Search", date:"2025", tag:"ML", tagType:"wip", stack:"TensorFlow · NLP", desc:"Text classification model that predicts song title and artist from a lyric snippet — full pipeline from preprocessing to neural network modeling.", org:"Solo Project"},
+    {name:"Weekend Getaway Ranker", date:"Jan 2026", tag:"GitHub", tagType:"live", stack:"Python", desc:"Data engineering project that ranks nearby travel destinations by distance, user ratings, and popularity.", org:"Solo Project"},
+    {name:"Smart ToDo API", date:"Jan 2026", tag:"API", tagType:"wip", stack:"FastAPI · JWT", desc:"RESTful backend supporting registration, JWT authentication, and full task CRUD with user-scoped, token-based access.", org:"Solo Project"},
+    {name:"Photo Gallery Application", date:"Dec 2025", tag:"GitHub", tagType:"live", stack:"React", desc:"Interactive photo gallery SPA with dynamic filtering and a responsive layout.", org:"Brainware University"},
+    {name:"Zerodha Clone", date:"Sep 2025", tag:"GitHub", tagType:"live", gh:"https://github.com/pandeyRishi007/dummy_zerodha", stack:"Full-Stack", desc:"Stock-trading platform clone replicating core Zerodha UI/UX end to end.", org:"Brainware University"},
+    {name:"Smart Examination System", date:"Jan 2022", tag:"Team Lead", tagType:"wip", stack:"Java · MySQL", desc:"Led a team building an automated examination system as backend developer and team leader.", org:"Bangabasi Morning College"},
+    {name:"College Management System", date:"Oct 2020", tag:"Backend", tagType:"wip", stack:"JDBC · PHP", desc:"A smart college management system built as backend developer using JDBC and PHP.", org:"Bangabasi Morning College"}
+  ];
+
+  const grid = document.getElementById('projGrid');
+  grid.innerHTML = projects.map(p => `
+    <div class="proj-card">
+      <div class="proj-top">
+        <div class="proj-title">${p.name}</div>
+        <div class="proj-badge ${p.tagType === 'wip' ? 'wip' : ''}">${p.tag}</div>
+      </div>
+      <div class="proj-desc">${p.desc}</div>
+      ${(p.gh || p.live) ? `<div class="proj-links">${p.live ? `<a class="proj-link" href="${p.live}" target="_blank" rel="noopener">Live demo ↗</a>` : ''}${p.gh ? `<a class="proj-link" href="${p.gh}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}</div>` : ''}
+      <div class="proj-meta">
+        <span class="proj-stack">${p.stack}</span>
+        <span>${p.date}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Terminal type-out
+  const termBody = document.getElementById('termBody');
+  const script = [
+    {type:'out', text:'Rishikesh Pandey'},
+    {type:'out', text:'MCA graduate · Full-Stack Developer · Kolkata, India'},
+    {type:'gap'},
+    {type:'prompt', text:'cat stack.txt'},
+    {type:'out', text:'React · Spring Boot · Node.js · FastAPI · Java'},
+    {type:'gap'},
+    {type:'prompt', text:'cat experience.txt'},
+    {type:'amber', text:'IBM — Full Stack Dev Intern (5 months)'},
+    {type:'gap'},
+    {type:'prompt', text:'echo $STATUS'},
+    {type:'amber', text:'Open to full-stack & AI/ML roles →'}
+  ];
+
+  let i = 0;
+  function typeNext(){
+    if(i >= script.length){
+      const cur = document.createElement('div');
+      cur.innerHTML = '<span class="prompt">$</span> <span class="cursor"></span>';
+      termBody.appendChild(cur);
+      return;
+    }
+    const item = script[i];
+    const div = document.createElement('div');
+    div.className = 'line';
+    if(item.type === 'gap'){
+      div.style.height = '4px';
+      div.style.marginBottom = '10px';
+    } else if(item.type === 'prompt'){
+      div.innerHTML = `<span class="prompt">$</span> ${item.text}`;
+    } else if(item.type === 'amber'){
+      div.innerHTML = `<span class="amber">${item.text}</span>`;
+    } else {
+      div.innerHTML = `<span class="out">${item.text}</span>`;
+    }
+    termBody.appendChild(div);
+    i++;
+    setTimeout(typeNext, item.type === 'gap' ? 120 : 380);
+  }
+  setTimeout(typeNext, 400);
+</script>
+
+</body>
+</html>
